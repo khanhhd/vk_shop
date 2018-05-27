@@ -11,5 +11,22 @@ module VkShop
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: [:get, :post, :options],
+        expose: [
+          'X-Total',
+          'X-Total-Pages',
+          'X-Page',
+          'X-Per-Page',
+          'X-Next-Page',
+          'X-Prev-Page',
+          'X-Offset',
+          'X-Rdb-Lang',
+          'X-Total-Count',
+        ]
+      end
+    end
   end
 end

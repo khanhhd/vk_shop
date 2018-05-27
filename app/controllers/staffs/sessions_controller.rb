@@ -8,8 +8,11 @@ class Staffs::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
   def create
-    binding.pry
-    super
+    staff = Staff.find_by(email: params[:session][:username])
+    if staff && staff.valid_password?(params[:session][:password])
+      staff.generate_token && sign_in(staff)
+    end
+    render json: {status: 200, token: staff.authentication_token}
   end
 
   # DELETE /resource/sign_out

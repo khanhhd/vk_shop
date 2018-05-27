@@ -1,6 +1,6 @@
 // in src/authClient.js
 import { AUTH_LOGIN, AUTH_LOGOUT } from 'admin-on-rest';
-
+import axios from 'axios';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
@@ -18,6 +18,7 @@ export default (type, params) => {
                 return response.json();
             })
             .then(({ token }) => {
+                debugger;
                 localStorage.setItem('token', token);
             });
     }
