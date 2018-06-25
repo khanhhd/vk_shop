@@ -11,8 +11,10 @@ class Staffs::SessionsController < Devise::SessionsController
     staff = Staff.find_by(email: params[:session][:username])
     if staff && staff.valid_password?(params[:session][:password])
       staff.generate_token && sign_in(staff)
+      render json: {status: 200, token: staff.authentication_token}
+    else
+      render json: {status: 403}
     end
-    render json: {status: 200, token: staff.authentication_token}
   end
 
   # DELETE /resource/sign_out

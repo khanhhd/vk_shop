@@ -1,15 +1,18 @@
 class OrdersController < ApplicationController
-  before_action :find_order, only: [:show, :edit, :update, :delete]
+  before_action :find_order, only: [:show, :edit, :update, :delete, :destroy]
 
   def index
-    response.headers["X-Total-Count"] = Order.all.size
-    render json: Order.all
+    # binding.pry
+    orders = params[:phone].present? ? Order.where("phone like ?", "%#{params[:phone]}%") : Order.all
+    response.headers["X-Total-Count"] = orders.size
+    render json: orders
     # data trả về phải là mảng
   end
 
   def show
     # response.headers["X-Total-Count"] = Order.all.size
     # render json: Staff.all
+    # binding.pry
     render json: @order
   end
 
@@ -28,8 +31,9 @@ class OrdersController < ApplicationController
   def edit
   end
 
-  def delete
+  def destroy
     @order.destroy
+    render json: @order
   end
 
   private
